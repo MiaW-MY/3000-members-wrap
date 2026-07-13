@@ -126,7 +126,10 @@
                 <span class="opening-title__num">${o.headline.replace(',', '')}</span>
                 <span class="opening-title__word">${o.headlineScript}</span>
               </h1>
-              <p class="opening-sub">${o.subcopy}<span class="opening-heart" aria-hidden="true">♥</span></p>
+              <p class="opening-sub">
+                <span class="opening-sub__line">One growing community. Thank you</span>
+                <span class="opening-sub__line opening-sub__line--heart">for being part of our journey.<span class="opening-heart" aria-hidden="true">♥</span></span>
+              </p>
             </div>
             <div class="opening-collage animate-in">
               ${photos}
