@@ -269,13 +269,14 @@ body {
   line-height: 1.5;
   color: #25145F;
   font-weight: 700;
-  max-width: 280px;
+  max-width: min(344px, 100%);
   margin: 12px auto 0;
   padding: 0 8px;
 }
 
 .opening-sub__line {
   display: block;
+  white-space: nowrap;
 }
 
 .opening-sub__line--heart {
