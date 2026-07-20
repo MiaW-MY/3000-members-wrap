@@ -453,18 +453,18 @@ body {
 .topbar__brand {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 3px;
   min-width: 0;
 }
 
-.topbar__logo--brand {
-  width: 42px;
-  height: 42px;
+.topbar__logo.topbar__logo--brand {
+  width: 50px;
+  height: 50px;
   object-fit: contain;
   background: transparent;
   border-radius: 8px;
   padding: 0;
-  box-shadow: 0 4px 14px rgba(10, 10, 10, 0.12);
+  box-shadow: none;
 }
 
 .opening-brand {
@@ -865,7 +865,7 @@ img.is-missing {
 .stat-list {
   display: flex;
   flex-direction: column;
-  gap: clamp(6px, 0.9vh, 8px);
+  gap: clamp(4px, 0.65vh, 6px);
   flex: 1;
   min-height: 0;
   justify-content: center;
@@ -877,29 +877,41 @@ img.is-missing {
 .stat-card {
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: 12px;
   background: rgba(255, 255, 255, 0.94);
   border: 1px solid rgba(107, 78, 155, 0.08);
-  border-radius: 18px;
-  min-height: clamp(58px, 7.5vh, 66px);
-  padding: 7px 14px;
-  box-shadow: 0 10px 26px rgba(77, 45, 126, 0.1);
+  border-radius: 15px;
+  min-height: clamp(46px, 6.05vh, 54px);
+  padding: 5px 12px;
+  box-shadow: 0 8px 20px rgba(77, 45, 126, 0.09);
 }
 
 .stat-card__icon {
-  width: clamp(46px, 12vw, 54px);
-  height: clamp(46px, 12vw, 54px);
+  width: clamp(38px, 10vw, 46px);
+  height: clamp(38px, 10vw, 46px);
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 18px;
   flex-shrink: 0;
+  overflow: hidden;
 }
 
 .stat-card__icon svg {
-  width: 28px;
-  height: 28px;
+  width: 24px;
+  height: 24px;
+}
+
+.stat-card__icon--image {
+  background: transparent;
+}
+
+.stat-card__icon-img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: contain;
 }
 
 .stat-card__icon--purple { background: #EFE4FF; color: #7A35C8; }
@@ -909,21 +921,21 @@ img.is-missing {
 .stat-card__icon--yellow { background: #FFF2D7; color: #D59A00; }
 
 .stat-card__value {
-  font-size: clamp(20px, 5.4vw, 26px);
+  font-size: clamp(18px, 4.8vw, 23px);
   font-weight: 800;
   color: var(--purple-deep);
   line-height: 1;
 }
 
 .stat-card__label {
-  font-size: clamp(11px, 3vw, 13px);
+  font-size: clamp(10px, 2.72vw, 12px);
   font-weight: 700;
   color: #21163E;
   margin-top: 2px;
 }
 
 .stat-card__sub {
-  font-size: clamp(10px, 2.7vw, 12px);
+  font-size: clamp(9px, 2.45vw, 11px);
   line-height: 1.25;
   color: var(--text-muted);
   margin-top: 2px;
@@ -1314,6 +1326,10 @@ img.is-missing {
   padding-bottom: calc(var(--safe-bottom) + 16px);
 }
 
+.thank-page--partners {
+  transform: translateY(-5px);
+}
+
 .thank-page__head {
   width: 100%;
 }
@@ -1529,32 +1545,34 @@ img.is-missing {
 .thank-layout--partners {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 5px;
 }
 
 .partners-logo-grid {
   flex: 0 0 auto;
   min-height: 0;
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 10px;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 5px;
+  width: calc(100% - 8px);
+  margin: 0 auto;
 }
 
 .partner-logo-card {
   min-height: 0;
-  aspect-ratio: 1.82 / 1;
-  border-radius: 14px;
+  aspect-ratio: 2.35 / 1;
+  border-radius: 9px;
   background: rgba(255,255,255,0.94);
   border: 1px solid rgba(107,78,155,0.08);
-  box-shadow: 0 8px 18px rgba(107,78,155,0.1);
+  box-shadow: 0 5px 12px rgba(107,78,155,0.07);
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 10px;
+  padding: 2px 4px;
   overflow: hidden;
 }
 
-.partner-logo-card::after {
+.partner-logo-card:empty::after {
   content: '';
   width: 58%;
   height: 38%;
@@ -1565,8 +1583,8 @@ img.is-missing {
 
 .partner-logo-card__img {
   display: block;
-  max-width: 100%;
-  max-height: 100%;
+  width: 100%;
+  height: 100%;
   object-fit: contain;
 }
 
@@ -1607,12 +1625,12 @@ img.is-missing {
 }
 
 .thank-page--partners .partners-impact {
-  margin-top: 15px;
+  margin-top: 0;
 }
 
 .partners-impact__icon {
-  width: 46px;
-  height: 46px;
+  width: 40px;
+  height: 40px;
   color: var(--purple-main);
   flex: 0 0 auto;
 }
@@ -1829,7 +1847,7 @@ img.is-missing {
   flex: 0 0 auto;
   min-height: 0;
   justify-content: flex-start;
-  width: min(100%, 365px);
+  width: min(86%, 344px);
   margin: 0 auto;
 }
 
@@ -2161,9 +2179,8 @@ img.is-missing {
   width: 100%;
   height: 100%;
   display: block;
-  object-fit: cover;
+  object-fit: contain;
   object-position: center center;
-  transform: scale(1.012);
 }
 
 .closing-content {

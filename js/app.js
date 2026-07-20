@@ -14,6 +14,8 @@
     const STAT_SVG = {
       members: '<svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="2"><circle cx="14" cy="9" r="3"/><circle cx="7" cy="11" r="2.5"/><circle cx="21" cy="11" r="2.5"/><path d="M8 22a6 6 0 0 1 12 0"/><path d="M2.5 21a5 5 0 0 1 8-3.9"/><path d="M17.5 17.1a5 5 0 0 1 8 3.9"/></svg>',
       calendar: '<svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="6" width="18" height="17" rx="2"/><path d="M9 3v6M19 3v6M5 11h18"/><path d="M10 15h.1M14 15h.1M18 15h.1M10 19h.1M14 19h.1M18 19h.1"/></svg>',
+      linkedin: '<svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="5" width="18" height="18" rx="3"/><path d="M10 13v6"/><path d="M10 10.2v.1"/><path d="M14 19v-6"/><path d="M14 15.5c0-1.6 1-2.8 2.6-2.8 1.8 0 2.9 1.2 2.9 3.3v3"/></svg>',
+      partners: '<svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="2"><path d="m12 18 2 2a3 3 0 0 0 4.2 0l3.2-3.2a3 3 0 0 0 0-4.2l-1.2-1.2"/><path d="m15 8-2-2a3 3 0 0 0-4.2 0L5.6 9.2a3 3 0 0 0 0 4.2l1.2 1.2"/><path d="m9 14 10-10"/><path d="m19 14-10 10"/></svg>',
       speaker: '<svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="10" r="4"/><path d="M5 24a7 7 0 0 1 14 0"/><path d="M21 7l1.5-2.5M23 12h2M20.5 17l2 2"/></svg>',
       handsHeart: '<svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 15 5 13l-2 4 6 6h4"/><path d="m19 15 4-2 2 4-6 6h-4"/><path d="M14 9.5 12.8 8.3a3 3 0 0 0-4.2 4.2L14 18l5.4-5.5a3 3 0 0 0-4.2-4.2L14 9.5z"/></svg>',
       globe: '<svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="2"><circle cx="14" cy="14" r="10"/><path d="M4 14h20M14 4a15 15 0 0 1 0 20M14 4a15 15 0 0 0 0 20"/></svg>',
@@ -127,8 +129,7 @@
                 <span class="opening-title__word">${o.headlineScript}</span>
               </h1>
               <p class="opening-sub">
-                <span class="opening-sub__line">One growing community. Thank you</span>
-                <span class="opening-sub__line opening-sub__line--heart">for being part of our journey.<span class="opening-heart" aria-hidden="true">♥</span></span>
+                <span class="opening-sub__line opening-sub__line--heart">Thank you for being part of our journey.<span class="opening-heart" aria-hidden="true">♥</span></span>
               </p>
             </div>
             <div class="opening-collage animate-in">
@@ -185,7 +186,7 @@
         .map(
           (s) => `
           <div class="stat-card animate-in">
-            <div class="stat-card__icon stat-card__icon--${s.color}">${STAT_SVG[s.icon] || STAT_SVG.members}</div>
+            <div class="stat-card__icon stat-card__icon--${s.color}${s.iconImage ? ' stat-card__icon--image' : ''}">${s.iconImage ? imgHtml(s.iconImage, null, 'stat-card__icon-img', s.label) : (STAT_SVG[s.icon] || STAT_SVG.members)}</div>
             <div>
               <div class="stat-card__value"${s.value != null ? ` data-count="${s.value}" data-suffix="${s.suffix || ''}"` : ''}>${s.value != null ? `0${s.suffix || ''}` : s.valueText}</div>
               <div class="stat-card__label">${s.label}</div>
@@ -250,8 +251,8 @@
             </div>
           </div>`;
       } else if (key === 'partners') {
-        const logoCards = (cat.logos || []).slice(0, 12)
-          .map((logo) => `<div class="partner-logo-card" aria-label="${logo.name} logo placeholder"></div>`)
+        const logoCards = (cat.logos || [])
+          .map((logo) => `<div class="partner-logo-card">${imgHtml(logo.logo, null, 'partner-logo-card__img', `${logo.name} logo`)}</div>`)
           .join('');
         feature = `
           <div class="thank-layout thank-layout--partners animate-in">
@@ -482,7 +483,7 @@
         e.preventDefault();
         const message = textarea.value.trim();
         if (!message) return;
-        const endpoint = C.feedback.formspreeEndpoint;
+        const endpoint = C.feedback.submitEndpoint || C.feedback.formspreeEndpoint;
         if (endpoint) {
           try {
             const res = await fetch(endpoint, {
