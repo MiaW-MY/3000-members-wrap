@@ -14,7 +14,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <link rel="icon" href="assets/icons/Icon%20black.png" type="image/png" />
-  <link rel="stylesheet" href="css/main.css?v=95" />
+  <link rel="stylesheet" href="css/main.css?v=96" />
 </head>
 <body>
   <div id="deck" class="deck" aria-label="BA Career Meetup celebration slides">
@@ -35,16 +35,21 @@
     gtag('config', 'G-VT3J1LFYX7', isDebug ? { debug_mode: true } : {});
 
     const viewedScreens = new Set();
-    window.trackScreen = (screenId, screenIndex) => {
+    window.trackScreen = (screenId, screenIndex, screenName) => {
       if (!screenId || viewedScreens.has(screenId)) return;
       viewedScreens.add(screenId);
-      gtag('event', 'screen_view', { screen_id: screenId, screen_index: screenIndex });
-      if (isDebug) console.log('[analytics] screen_view', screenId, screenIndex);
+      const label = screenName || screenId;
+      gtag('event', 'screen_view', {
+        screen_name: label,
+        screen_class: screenId,
+        screen_index: screenIndex,
+      });
+      if (isDebug) console.log('[analytics] screen_view', label, screenIndex);
     };
 
     window.dispatchEvent(new Event('firebase-ready'));
   </script>
-  <script defer src="js/content.js?v=95"></script>
-  <script defer src="js/app.js?v=95"></script>
+  <script defer src="js/content.js?v=96"></script>
+  <script defer src="js/app.js?v=96"></script>
 </body>
 </html>

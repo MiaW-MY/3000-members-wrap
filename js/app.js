@@ -11,6 +11,19 @@
 
     const THANK_INDEX = { members: 5, speakers: 6, partners: 7, volunteers: 8 };
 
+    const SCREEN_LABELS = {
+      opening: '01 Opening',
+      'journey-intro': '02 Our Journey',
+      stats: '03 By the Numbers',
+      moments: '04 Community Moments',
+      'thank-speakers': '05 Thank You — Speakers',
+      'thank-partners': '06 Thank You — Partners',
+      'thank-volunteers': '07 Thank You — Volunteers',
+      'whats-next': "08 What's Next",
+      feedback: '09 Your Voice',
+      closing: '10 Closing',
+    };
+
     const STAT_SVG = {
       members: '<svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="2"><circle cx="14" cy="9" r="3"/><circle cx="7" cy="11" r="2.5"/><circle cx="21" cy="11" r="2.5"/><path d="M8 22a6 6 0 0 1 12 0"/><path d="M2.5 21a5 5 0 0 1 8-3.9"/><path d="M17.5 17.1a5 5 0 0 1 8 3.9"/></svg>',
       calendar: '<svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="6" width="18" height="17" rx="2"/><path d="M9 3v6M19 3v6M5 11h18"/><path d="M10 15h.1M14 15h.1M18 15h.1M10 19h.1M14 19h.1M18 19h.1"/></svg>',
@@ -405,7 +418,8 @@
             });
             progressEl.classList.toggle('progress--on-wave', idx === 0);
             if (entry.target.dataset.screenId === 'stats') runCountUp(entry.target);
-            window.trackScreen?.(entry.target.dataset.screenId, idx + 1);
+            const screenId = entry.target.dataset.screenId;
+            window.trackScreen?.(screenId, idx + 1, SCREEN_LABELS[screenId]);
           });
         },
         { threshold: 0.55 }
