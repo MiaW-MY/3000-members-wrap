@@ -405,6 +405,7 @@
             });
             progressEl.classList.toggle('progress--on-wave', idx === 0);
             if (entry.target.dataset.screenId === 'stats') runCountUp(entry.target);
+            window.trackScreen?.(entry.target.dataset.screenId, idx + 1);
           });
         },
         { threshold: 0.55 }
