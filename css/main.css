@@ -116,10 +116,11 @@ body {
 .screen__inner--opening {
   padding:
     calc(var(--safe-top) + 6px)
-    20px
+    0
     0;
   gap: 0;
   position: relative;
+  max-width: none;
 }
 
 .screen--opening .topbar__name { color: var(--purple-deep); }
@@ -140,8 +141,10 @@ body {
   min-height: 0;
   display: flex;
   flex-direction: column;
+  gap: clamp(6px, 1vh, 10px);
   position: relative;
   overflow: hidden;
+  width: 100%;
 }
 
 .opening-sparkles {
@@ -224,9 +227,13 @@ body {
 .opening-hero {
   text-align: center;
   flex-shrink: 0;
-  padding-top: 4px;
+  padding-top: clamp(0px, 0.8vh, 4px);
   position: relative;
   z-index: 1;
+  width: min(100%, 430px);
+  margin: 0 auto;
+  padding-left: 20px;
+  padding-right: 20px;
 }
 
 .opening-title {
@@ -278,27 +285,28 @@ body {
   color: #25145F;
   font-weight: 700;
   max-width: min(344px, 100%);
-  margin: 12px auto 0;
+  margin: clamp(8px, 1.3vh, 12px) auto 0;
   padding: 0 8px;
 }
 
 .opening-sub__line {
-  display: block;
-  white-space: nowrap;
+  display: inline;
+  white-space: normal;
 }
 
 .opening-sub__line--heart {
-  white-space: nowrap;
+  white-space: normal;
 }
 
 .opening-collage {
   position: relative;
-  flex: 1;
-  min-height: 340px;
+  flex: 1 1 clamp(260px, 42dvh, 390px);
+  min-height: 0;
   max-height: none;
-  margin: 4px -20px 0;
+  margin: clamp(8px, 1.2vh, 12px) 0 0;
   z-index: 1;
   isolation: isolate;
+  width: 100%;
 }
 
 .opening-photo {
@@ -397,8 +405,8 @@ body {
 
 .opening-wave {
   position: absolute;
-  left: -20px;
-  right: -20px;
+  left: 0;
+  right: 0;
   bottom: calc(var(--safe-bottom) + var(--progress-h) + 10px);
   z-index: 14;
   background: transparent;
@@ -2651,7 +2659,11 @@ img.is-missing {
   .stat-card { padding: 8px 12px; }
   .stat-card__icon { width: 34px; height: 34px; font-size: 16px; }
   .thanks-card__circle { width: 64px; height: 64px; }
-  .opening-collage { min-height: 180px; max-height: 36vh; }
+  .opening-collage {
+    flex-basis: clamp(190px, 36dvh, 250px);
+    min-height: 0;
+    max-height: none;
+  }
   .opening-title__num { font-size: clamp(48px, 14vw, 64px); }
   .opening-title__word { font-size: clamp(36px, 10vw, 48px); }
   .carousel__frame { max-height: 36vh; }
