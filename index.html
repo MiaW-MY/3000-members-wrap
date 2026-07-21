@@ -14,7 +14,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <link rel="icon" href="assets/icons/Icon%20black.png" type="image/png" />
-  <link rel="stylesheet" href="css/main.css?v=94" />
+  <link rel="stylesheet" href="css/main.css?v=95" />
 </head>
 <body>
   <div id="deck" class="deck" aria-label="BA Career Meetup celebration slides">
@@ -25,33 +25,26 @@
 
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
-  <script type="module">
-    import { initializeApp } from 'https://www.gstatic.com/firebasejs/12.16.0/firebase-app.js';
-    import { getAnalytics, logEvent } from 'https://www.gstatic.com/firebasejs/12.16.0/firebase-analytics.js';
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-VT3J1LFYX7"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
 
-    const firebaseConfig = {
-      apiKey: 'AIzaSyDRB2c9Tth5MAD1WDa8okzapKbJ-Wt2gJY',
-      authDomain: 'members-389eb.firebaseapp.com',
-      projectId: 'members-389eb',
-      storageBucket: 'members-389eb.firebasestorage.app',
-      messagingSenderId: '396206548750',
-      appId: '1:396206548750:web:fc59fa9073a5e594e9995f',
-      measurementId: 'G-VT3J1LFYX7',
-    };
+    const isDebug = new URLSearchParams(location.search).has('debug');
+    gtag('config', 'G-VT3J1LFYX7', isDebug ? { debug_mode: true } : {});
 
-    const app = initializeApp(firebaseConfig);
-    const analytics = getAnalytics(app);
     const viewedScreens = new Set();
-
     window.trackScreen = (screenId, screenIndex) => {
       if (!screenId || viewedScreens.has(screenId)) return;
       viewedScreens.add(screenId);
-      logEvent(analytics, 'screen_view', { screen_id: screenId, screen_index: screenIndex });
+      gtag('event', 'screen_view', { screen_id: screenId, screen_index: screenIndex });
+      if (isDebug) console.log('[analytics] screen_view', screenId, screenIndex);
     };
 
     window.dispatchEvent(new Event('firebase-ready'));
   </script>
-  <script defer src="js/content.js?v=94"></script>
-  <script defer src="js/app.js?v=94"></script>
+  <script defer src="js/content.js?v=95"></script>
+  <script defer src="js/app.js?v=95"></script>
 </body>
 </html>
