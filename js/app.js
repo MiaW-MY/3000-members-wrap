@@ -518,11 +518,16 @@
       setTimeout(() => toastEl.classList.remove('toast--show'), 2800);
     }
 
-    buildAll();
-    renderMoment(0);
-    initObserver();
-    initEvents();
-    screens[0]?.classList.add('is-visible');
+    function startApp() {
+      buildAll();
+      renderMoment(0);
+      initObserver();
+      initEvents();
+      screens[0]?.classList.add('is-visible');
+    }
+
+    if (window.trackScreen) startApp();
+    else window.addEventListener('firebase-ready', startApp, { once: true });
   } catch (err) {
     console.error(err);
     const deck = document.getElementById('deck');
