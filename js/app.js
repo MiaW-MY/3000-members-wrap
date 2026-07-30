@@ -491,11 +491,17 @@
         if (charCount) charCount.textContent = '0';
       };
 
+      let feedbackSubmitting = false;
+
       form?.addEventListener('submit', async (e) => {
         e.preventDefault();
+        if (feedbackSubmitting) return;
         const message = textarea.value.trim();
         if (!message) return;
         const endpoint = C.feedback.submitEndpoint || C.feedback.formspreeEndpoint;
+        const submitBtn = form.querySelector('button[type="submit"]');
+        feedbackSubmitting = true;
+        if (submitBtn) submitBtn.disabled = true;
         if (endpoint) {
           try {
             const res = await fetch(endpoint, {
@@ -506,6 +512,8 @@
             if (!res.ok) throw new Error();
             showSharedMessage(message);
           } catch {
+            feedbackSubmitting = false;
+            if (submitBtn) submitBtn.disabled = false;
             toast('Something went wrong. Please try again.');
           }
         } else {

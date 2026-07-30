@@ -9,13 +9,26 @@
 
 const MAX_LENGTH = 500;
 
+function airtableHint(status) {
+  if (status === 401 || status === 403) return 'Check AIRTABLE_TOKEN scope (data.records:write) and base access.';
+  if (status === 404) return 'Check AIRTABLE_BASE_ID (app…) and table name (e.g. "Table 1").';
+  if (status === 422) return 'Check column names: Message (long text) and Source (single line text).';
+  return `Airtable returned ${status}.`;
+}
+
 export async function onRequestPost({ request, env }) {
   const token = env.AIRTABLE_TOKEN;
   const baseId = env.AIRTABLE_BASE_ID;
-  const tableName = env.AIRTABLE_TABLE_NAME || 'Feedback';
+  const tableRef = env.AIRTABLE_TABLE_ID || env.AIRTABLE_TABLE_NAME || 'Table 1';
 
   if (!token || !baseId) {
     return Response.json({ error: 'Feedback storage is not configured.' }, { status: 503 });
+  }
+
+  if (!baseId.startsWith('app')) {
+    return Response.json({
+      error: 'AIRTABLE_BASE_ID must start with "app", not the base display name.',
+    }, { status: 503 });
   }
 
   let body;
@@ -34,7 +47,7 @@ export async function onRequestPost({ request, env }) {
   }
 
   const airtableRes = await fetch(
-    `https://api.airtable.com/v0/${baseId}/${encodeURIComponent(tableName)}`,
+    `https://api.airtable.com/v0/${baseId}/${encodeURIComponent(tableRef)}`,
     {
       method: 'POST',
       headers: {
@@ -57,7 +70,10 @@ export async function onRequestPost({ request, env }) {
   if (!airtableRes.ok) {
     const detail = await airtableRes.text();
     console.error('Airtable error:', airtableRes.status, detail);
-    return Response.json({ error: 'Could not save message.' }, { status: 502 });
+    return Response.json({
+      error: 'Could not save message.',
+      hint: airtableHint(airtableRes.status),
+    }, { status: 502 });
   }
 
   return Response.json({ ok: true }, {
