@@ -17,12 +17,12 @@ window.CONTENT = {
     subcopy:
       'Thank you for being part of our journey.',
     collage: [
-      'opening/collage-1.jpg',
-      'opening/collage-2.jpg',
-      'opening/collage-3.jpg',
-      'opening/collage-4.jpg',
-      'opening/collage-5.jpg',
-      'opening/collage-6.jpg',
+      'opening/1.png',
+      'opening/2.png',
+      'opening/3.png',
+      'opening/4.png',
+      'opening/5.png',
+      'opening/6.png',
     ],
   },
 
@@ -98,11 +98,10 @@ window.CONTENT = {
   },
 
   moments: [
-    { image: 'moments/moment-1.jpg', caption: 'Learning together' },
-    { image: 'moments/moment-2.jpg', caption: 'Networking night' },
-    { image: 'moments/moment-3.jpg', caption: 'Sharing stories' },
-    { image: 'moments/moment-4.jpg', caption: 'Growing together' },
-    { image: 'moments/moment-5.jpg', caption: 'Community in action' },
+    { image: 'moments/1.png', caption: 'Learning together' },
+    { image: 'moments/2.png', caption: 'Networking night' },
+    { image: 'moments/3.png', caption: 'Sharing stories' },
+    { image: 'moments/4.png', caption: 'Growing together' },
   ],
 
   thankYou: {
@@ -219,7 +218,7 @@ window.CONTENT = {
   },
 
   closing: {
-    image: 'ending/ChatGPT Image Jul 13, 2026, 06_41_08 PM.png',
+    image: 'ending/closing.png',
     headline: "Here's to",
     headlineScript: '3,000 Members',
     subline: 'and many more to come!',

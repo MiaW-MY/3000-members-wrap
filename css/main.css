@@ -1503,7 +1503,7 @@ img.is-missing {
 
 .thank-layout--speakers {
   display: grid;
-  grid-template-rows: minmax(0, 1.22fr) minmax(0, 1fr);
+  grid-template-rows: minmax(0, 1.04fr) minmax(0, 1fr);
   gap: 10px;
 }
 
@@ -2187,8 +2187,8 @@ img.is-missing {
   width: 100%;
   height: 100%;
   display: block;
-  object-fit: contain;
-  object-position: center center;
+  object-fit: cover;
+  object-position: center top;
 }
 
 .closing-content {

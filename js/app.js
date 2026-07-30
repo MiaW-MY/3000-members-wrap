@@ -253,14 +253,14 @@
         feature = `
           <div class="thank-layout thank-layout--speakers animate-in">
             <div class="speaker-feature">
-              ${imgHtml('thanks/speakers-1.jpg', null, 'thank-photo__img', 'Speaker presenting')}
+              ${imgHtml('thanks/1.png', null, 'thank-photo__img', 'Speaker presenting')}
               <span class="speaker-feature__badge">Featured Talk</span>
             </div>
             <div class="thank-mini-grid">
-              <div class="thank-photo">${imgHtml('thanks/speakers-2.jpg', null, 'thank-photo__img', 'Speaker moment')}</div>
+              <div class="thank-photo">${imgHtml('thanks/2.png', null, 'thank-photo__img', 'Speaker moment')}</div>
               <div class="thank-quote thank-quote--purple">Every talk adds a new perspective.</div>
               <div class="thank-quote thank-quote--gold">Ideas shared today, impact tomorrow.</div>
-              <div class="thank-photo">${imgHtml('thanks/speakers-3.jpg', null, 'thank-photo__img', 'Q and A')}</div>
+              <div class="thank-photo">${imgHtml('thanks/3.png', null, 'thank-photo__img', 'Q and A')}</div>
             </div>
           </div>`;
       } else if (key === 'partners') {
@@ -281,14 +281,14 @@
       } else {
         feature = `
           <div class="thank-layout thank-layout--volunteers animate-in">
-            <div class="volunteer-hero">${imgHtml('thanks/volunteers-1.jpg', null, 'thank-photo__img', 'Volunteers group')}</div>
+            <div class="volunteer-hero">${imgHtml('volunteer/1.jpg', null, 'thank-photo__img', 'Volunteers group')}</div>
             <div class="volunteer-grid">
               <div class="volunteer-card">
-                ${imgHtml('thanks/volunteers-2.jpg', null, 'thank-photo__img', 'Planning with care')}
+                ${imgHtml('volunteer/2.png', null, 'thank-photo__img', 'Planning with care')}
                 <span>Planning with care</span>
               </div>
               <div class="volunteer-card">
-                ${imgHtml('thanks/volunteers-3.jpg', null, 'thank-photo__img', 'Helping with heart')}
+                ${imgHtml('volunteer/3.png', null, 'thank-photo__img', 'Helping with heart')}
                 <span>Helping with heart</span>
               </div>
             </div>
