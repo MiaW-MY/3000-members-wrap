@@ -147,9 +147,6 @@
             </div>
             <div class="opening-collage animate-in">
               ${photos}
-              <button class="opening-play" type="button" aria-label="Play video">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="var(--purple-main)"><polygon points="8,5 19,12 8,19"/></svg>
-              </button>
             </div>
           </div>
           <div class="opening-wave animate-in">

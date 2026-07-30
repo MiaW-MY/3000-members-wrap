@@ -384,25 +384,6 @@ body {
   z-index: 8;
 }
 
-.opening-play {
-  position: absolute;
-  top: 52%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 58px;
-  height: 58px;
-  border: none;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.96);
-  box-shadow: 0 4px 24px rgba(91, 58, 140, 0.22);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 12;
-  cursor: pointer;
-  padding-left: 3px;
-}
-
 .opening-wave {
   position: absolute;
   left: 0;
