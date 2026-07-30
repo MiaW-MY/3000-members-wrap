@@ -58,10 +58,72 @@
       return `assets/${rel.split('/').map(encodeURIComponent).join('/')}`;
     }
 
-    function imgHtml(src, fallback, cls, alt) {
+    function imgHtml(src, fallback, cls, alt, opts = {}) {
       const primary = asset(src);
       const fb = fallback ? asset(fallback) : '';
-      return `<img class="${cls}" src="${primary}" alt="${alt || ''}" onerror="if(this.dataset.fallback){this.src=this.dataset.fallback;this.dataset.fallback=''}else{this.classList.add('is-missing')}" ${fb ? `data-fallback="${fb}"` : ''} />`;
+      const fbAttr = fb ? ` data-fallback="${fb}"` : '';
+      const eager = opts.eager === true;
+      const priority = opts.priority ? ` fetchpriority="${opts.priority}"` : '';
+
+      if (eager) {
+        return `<img class="${cls}" src="${primary}" alt="${alt || ''}" decoding="async" loading="eager"${priority}${fbAttr} />`;
+      }
+      return `<img class="${cls} img-deferred" alt="${alt || ''}" decoding="async" data-src="${primary}"${fbAttr} />`;
+    }
+
+    function bindImageLoad(img) {
+      if (img.dataset.bound) return;
+      img.dataset.bound = '1';
+      const markLoaded = () => img.classList.add('is-loaded');
+      if (img.complete && img.naturalWidth > 0) markLoaded();
+      else img.addEventListener('load', markLoaded, { once: true });
+      img.addEventListener('error', () => {
+        if (img.dataset.fallback) {
+          img.src = img.dataset.fallback;
+          delete img.dataset.fallback;
+        } else {
+          img.classList.add('is-missing');
+        }
+      });
+    }
+
+    function activateImage(img) {
+      if (img.dataset.src && !img.dataset.active) {
+        img.dataset.active = '1';
+        img.src = img.dataset.src;
+      }
+      bindImageLoad(img);
+    }
+
+    function loadScreenImages(screenEl) {
+      if (!screenEl || screenEl.dataset.imagesLoading) return;
+      screenEl.dataset.imagesLoading = '1';
+      screenEl.querySelectorAll('img').forEach(activateImage);
+    }
+
+    function prefetchMomentImages() {
+      C.moments.forEach((m, i) => {
+        if (i === momentIndex) return;
+        const img = new Image();
+        img.src = asset(m.image);
+      });
+    }
+
+    function prefetchRemainingScreens() {
+      const schedule = window.requestIdleCallback || ((cb) => setTimeout(cb, 150));
+      let idx = 2;
+
+      const prefetchNext = () => {
+        if (idx >= screens.length) {
+          prefetchMomentImages();
+          return;
+        }
+        loadScreenImages(screens[idx]);
+        idx += 1;
+        schedule(prefetchNext, { timeout: 1200 });
+      };
+
+      schedule(prefetchNext, { timeout: 600 });
     }
 
     function el(tag, cls, html) {
@@ -134,7 +196,7 @@
             </div>
             <div class="opening-hero animate-in">
               <div class="opening-brand">
-                ${imgHtml(C.brand.logoFull, C.brand.logoFallback, 'opening-brand__img', 'BA Career')}
+                ${imgHtml(C.brand.logoFull, C.brand.logoFallback, 'opening-brand__img', 'BA Career', { eager: true, priority: 'high' })}
               </div>
               <span class="badge badge--pill">${o.badge}</span>
               <h1 class="opening-title">
@@ -250,14 +312,14 @@
         feature = `
           <div class="thank-layout thank-layout--speakers animate-in">
             <div class="speaker-feature">
-              ${imgHtml('thanks/1.png', null, 'thank-photo__img', 'Speaker presenting')}
+              ${imgHtml('thanks/1.jpg', null, 'thank-photo__img', 'Speaker presenting')}
               <span class="speaker-feature__badge">Featured Talk</span>
             </div>
             <div class="thank-mini-grid">
-              <div class="thank-photo">${imgHtml('thanks/2.png', null, 'thank-photo__img', 'Speaker moment')}</div>
+              <div class="thank-photo">${imgHtml('thanks/2.jpg', null, 'thank-photo__img', 'Speaker moment')}</div>
               <div class="thank-quote thank-quote--purple">Every talk adds a new perspective.</div>
               <div class="thank-quote thank-quote--gold">Ideas shared today, impact tomorrow.</div>
-              <div class="thank-photo">${imgHtml('thanks/3.png', null, 'thank-photo__img', 'Q and A')}</div>
+              <div class="thank-photo">${imgHtml('thanks/3.jpg', null, 'thank-photo__img', 'Q and A')}</div>
             </div>
           </div>`;
       } else if (key === 'partners') {
@@ -281,11 +343,11 @@
             <div class="volunteer-hero">${imgHtml('volunteer/1.jpg', null, 'thank-photo__img', 'Volunteers group')}</div>
             <div class="volunteer-grid">
               <div class="volunteer-card">
-                ${imgHtml('volunteer/2.png', null, 'thank-photo__img', 'Planning with care')}
+                ${imgHtml('volunteer/2.jpg', null, 'thank-photo__img', 'Planning with care')}
                 <span>Planning with care</span>
               </div>
               <div class="volunteer-card">
-                ${imgHtml('volunteer/3.png', null, 'thank-photo__img', 'Helping with heart')}
+                ${imgHtml('volunteer/3.jpg', null, 'thank-photo__img', 'Helping with heart')}
                 <span>Helping with heart</span>
               </div>
             </div>
@@ -418,6 +480,9 @@
             });
             progressEl.classList.toggle('progress--on-wave', idx === 0);
             if (entry.target.dataset.screenId === 'stats') runCountUp(entry.target);
+            loadScreenImages(entry.target);
+            if (screens[idx + 1]) loadScreenImages(screens[idx + 1]);
+            if (screens[idx + 2]) loadScreenImages(screens[idx + 2]);
             const screenId = entry.target.dataset.screenId;
             window.trackScreen?.(screenId, idx + 1, SCREEN_LABELS[screenId]);
           });
@@ -449,7 +514,7 @@
       });
     }
 
-    function renderMoment(i) {
+    function renderMoment(i, loadImage = false) {
       const slide = document.getElementById('moment-slide');
       const count = document.getElementById('moment-count');
       const dots = document.getElementById('moment-dots');
@@ -458,8 +523,9 @@
       const m = C.moments[i];
       const src = asset(m.image);
       slide.innerHTML = `
-        <img class="carousel__img" src="${src}" alt="${m.caption}" onerror="this.classList.add('is-missing')" />
+        <img class="carousel__img img-deferred" data-src="${src}" alt="${m.caption}" />
         <span class="carousel__caption">${m.caption}</span>`;
+      if (loadImage) activateImage(slide.querySelector('img'));
       count.textContent = `${i + 1}/${C.moments.length}`;
 
       if (dots && !dots.children.length) {
@@ -473,8 +539,8 @@
       deck.addEventListener('click', (e) => {
         const card = e.target.closest('[data-goto]');
         if (card) scrollToScreen(parseInt(card.dataset.goto, 10));
-        if (e.target.closest('[data-moment-prev]')) renderMoment((momentIndex - 1 + C.moments.length) % C.moments.length);
-        if (e.target.closest('[data-moment-next]')) renderMoment((momentIndex + 1) % C.moments.length);
+        if (e.target.closest('[data-moment-prev]')) renderMoment((momentIndex - 1 + C.moments.length) % C.moments.length, true);
+        if (e.target.closest('[data-moment-next]')) renderMoment((momentIndex + 1) % C.moments.length, true);
       });
 
       const form = document.getElementById('feedback-form');
@@ -560,7 +626,7 @@
       document.getElementById('moments-carousel')?.addEventListener('touchend', (e) => {
         const dx = e.changedTouches[0].clientX - touchStartX;
         if (Math.abs(dx) > 40) {
-          renderMoment(dx < 0 ? (momentIndex + 1) % C.moments.length : (momentIndex - 1 + C.moments.length) % C.moments.length);
+          renderMoment(dx < 0 ? (momentIndex + 1) % C.moments.length : (momentIndex - 1 + C.moments.length) % C.moments.length, true);
         }
       }, { passive: true });
     }
@@ -574,6 +640,9 @@
     function startApp() {
       buildAll();
       renderMoment(0);
+      loadScreenImages(screens[0]);
+      loadScreenImages(screens[1]);
+      prefetchRemainingScreens();
       initObserver();
       initEvents();
       screens[0]?.classList.add('is-visible');

@@ -1,6 +1,18 @@
 /* ===== Reset & Base ===== */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
+.deck img:not(.is-loaded):not(.is-missing) {
+  opacity: 0;
+}
+
+.deck img.is-loaded {
+  opacity: 1;
+}
+
+.opening-photo__img.is-loaded {
+  transition: opacity 0.35s ease-out;
+}
+
 :root {
   --gold: #C9A227;
   --gold-light: #E8D48B;
@@ -347,6 +359,10 @@ body {
   height: 100%;
   object-fit: cover;
   display: block;
+}
+
+.opening-photo:has(.opening-photo__img:not(.is-loaded):not(.is-missing))::before {
+  opacity: 1;
 }
 
 .opening-photo__img.is-missing {

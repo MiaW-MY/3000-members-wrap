@@ -17,12 +17,12 @@ window.CONTENT = {
     subcopy:
       'Thank you for being part of our journey.',
     collage: [
-      'opening/1.png',
-      'opening/2.png',
-      'opening/3.png',
-      'opening/4.png',
-      'opening/5.png',
-      'opening/6.png',
+      'opening/1.jpg',
+      'opening/2.jpg',
+      'opening/3.jpg',
+      'opening/4.jpg',
+      'opening/5.jpg',
+      'opening/6.jpg',
     ],
   },
 
@@ -98,10 +98,10 @@ window.CONTENT = {
   },
 
   moments: [
-    { image: 'moments/1.png', caption: 'Learning together' },
-    { image: 'moments/2.png', caption: 'Networking night' },
-    { image: 'moments/3.png', caption: 'Sharing stories' },
-    { image: 'moments/4.png', caption: 'Growing together' },
+    { image: 'moments/1.jpg', caption: 'Learning together' },
+    { image: 'moments/2.jpg', caption: 'Networking night' },
+    { image: 'moments/3.jpg', caption: 'Sharing stories' },
+    { image: 'moments/4.jpg', caption: 'Growing together' },
   ],
 
   thankYou: {
@@ -182,7 +182,7 @@ window.CONTENT = {
   whatsNext: {
     title: "What's Next",
     subtitle: "Here’s what we hope to keep building together.",
-    bottomImage: 'whats-next/cutted.png',
+    bottomImage: 'whats-next/cutted.jpg',
     items: [
       {
         text: 'More practical career support',
@@ -220,7 +220,7 @@ window.CONTENT = {
   },
 
   closing: {
-    image: 'ending/closing.png',
+    image: 'ending/closing.jpg',
     headline: "Here's to",
     headlineScript: '3,000 Members',
     subline: 'and many more to come!',
