@@ -1973,11 +1973,17 @@ img.is-missing {
 }
 
 .feedback-question__main {
-  max-width: 310px;
+  max-width: min(390px, 100%);
   font-size: clamp(15px, 4vw, 18px);
   line-height: 1.45;
   font-weight: 800;
   color: #201734;
+}
+
+@media (min-width: 390px) {
+  .feedback-question__main {
+    white-space: nowrap;
+  }
 }
 
 .feedback-question__sub {
@@ -2009,9 +2015,28 @@ img.is-missing {
   display: block;
 }
 
+.feedback-name-field {
+  display: block;
+}
+
+.feedback-name-field input {
+  width: 100%;
+  min-height: 52px;
+  border: 2px solid rgba(155,126,200,0.24);
+  border-radius: 18px;
+  padding: 0 20px;
+  font-family: var(--font);
+  font-size: clamp(14px, 3.8vw, 16px);
+  font-weight: 600;
+  background: rgba(255,255,255,0.88);
+  color: #201734;
+  outline: none;
+  box-shadow: 0 8px 24px rgba(107,78,155,0.04);
+}
+
 .feedback-form textarea {
   width: 100%;
-  height: clamp(150px, 22vh, 188px);
+  height: clamp(116px, 17vh, 152px);
   border: 2px solid rgba(155,126,200,0.26);
   border-radius: 22px;
   padding: 22px 24px 42px;
@@ -2025,12 +2050,14 @@ img.is-missing {
   color: #201734;
 }
 
-.feedback-form textarea::placeholder {
+.feedback-form textarea::placeholder,
+.feedback-name-field input::placeholder {
   color: rgba(122,107,142,0.45);
   font-weight: 600;
 }
 
-.feedback-form textarea:focus {
+.feedback-form textarea:focus,
+.feedback-name-field input:focus {
   border-color: rgba(107,78,155,0.45);
   box-shadow: 0 0 0 3px rgba(155,126,200,0.12);
 }

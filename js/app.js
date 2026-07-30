@@ -352,6 +352,9 @@
             <p class="feedback-question__sub">${f.prompt}</p>
           </div>
           <form class="feedback-form animate-in" id="feedback-form">
+            <label class="feedback-name-field">
+              <input name="name" type="text" placeholder="${f.namePlaceholder}" maxlength="${f.nameMaxLength}" autocomplete="name" required />
+            </label>
             <label class="feedback-field">
               <textarea name="message" placeholder="${f.placeholder}" maxlength="${f.maxLength}" required></textarea>
               <span class="feedback-form__counter"><span id="char-count">0</span> / ${f.maxLength}</span>
@@ -476,20 +479,30 @@
 
       const form = document.getElementById('feedback-form');
       const textarea = form?.querySelector('textarea');
+      const nameInput = form?.querySelector('input[name="name"]');
       const charCount = document.getElementById('char-count');
       const successCard = document.getElementById('feedback-success');
       const sharedMessage = document.getElementById('feedback-shared-message');
       const noteCard = document.getElementById('feedback-note-card');
+      const feedbackStorageKey = 'baCareer3000Feedback';
       textarea?.addEventListener('input', () => { if (charCount) charCount.textContent = textarea.value.length; });
 
       const showSharedMessage = (message) => {
-        form.hidden = true;
+        if (form) form.hidden = true;
         if (sharedMessage) sharedMessage.textContent = message;
         if (successCard) successCard.hidden = false;
         if (noteCard) noteCard.hidden = false;
-        textarea.value = '';
+        if (textarea) textarea.value = '';
+        if (nameInput) nameInput.value = '';
         if (charCount) charCount.textContent = '0';
       };
+
+      try {
+        const savedFeedback = JSON.parse(localStorage.getItem(feedbackStorageKey) || 'null');
+        if (savedFeedback?.message) showSharedMessage(savedFeedback.message);
+      } catch {
+        localStorage.removeItem(feedbackStorageKey);
+      }
 
       let feedbackSubmitting = false;
 
@@ -497,7 +510,8 @@
         e.preventDefault();
         if (feedbackSubmitting) return;
         const message = textarea.value.trim();
-        if (!message) return;
+        const name = nameInput?.value.trim() || '';
+        if (!name || !message) return;
         const endpoint = C.feedback.submitEndpoint || C.feedback.formspreeEndpoint;
         const submitBtn = form.querySelector('button[type="submit"]');
         feedbackSubmitting = true;
@@ -507,9 +521,10 @@
             const res = await fetch(endpoint, {
               method: 'POST',
               headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-              body: JSON.stringify({ message, _subject: 'BA Career 3000 Wrap — New Message' }),
+              body: JSON.stringify({ name, message, _subject: 'BA Career 3000 Wrap — New Message' }),
             });
             if (!res.ok) throw new Error();
+            localStorage.setItem(feedbackStorageKey, JSON.stringify({ name, message, submittedAt: new Date().toISOString() }));
             showSharedMessage(message);
           } catch {
             feedbackSubmitting = false;
@@ -517,6 +532,7 @@
             toast('Something went wrong. Please try again.');
           }
         } else {
+          localStorage.setItem(feedbackStorageKey, JSON.stringify({ name, message, submittedAt: new Date().toISOString() }));
           showSharedMessage(message);
         }
       });

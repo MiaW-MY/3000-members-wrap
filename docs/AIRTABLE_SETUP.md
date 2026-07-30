@@ -10,6 +10,7 @@ User stays on the Wrap page. Messages are saved to your Airtable base via a Clou
 
 | Column name | Field type | Notes |
 |-------------|------------|--------|
+| **Name or nickname** | Single line text | Required — visitor name |
 | **Message** | Long text | Required — user message |
 | **Source** | Single line text | Auto-filled as `3000 Wrap` |
 | **Created** | Created time | Optional — Airtable auto timestamp |

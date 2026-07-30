@@ -8,11 +8,13 @@
  */
 
 const MAX_LENGTH = 500;
+const MAX_NAME_LENGTH = 60;
+const NAME_FIELD = 'Name or nickname';
 
 function airtableHint(status) {
   if (status === 401 || status === 403) return 'Check AIRTABLE_TOKEN scope (data.records:write) and base access.';
   if (status === 404) return 'Check AIRTABLE_BASE_ID (app…) and table name (e.g. "Table 1").';
-  if (status === 422) return 'Check column names: Message (long text) and Source (single line text).';
+  if (status === 422) return `Check column names: ${NAME_FIELD}, Message (long text), and Source (single line text).`;
   return `Airtable returned ${status}.`;
 }
 
@@ -39,6 +41,13 @@ export async function onRequestPost({ request, env }) {
   }
 
   const message = String(body.message || '').trim();
+  const name = String(body.name || '').trim();
+  if (!name) {
+    return Response.json({ error: 'Name or nickname is required.' }, { status: 400 });
+  }
+  if (name.length > MAX_NAME_LENGTH) {
+    return Response.json({ error: `Name must be ${MAX_NAME_LENGTH} characters or fewer.` }, { status: 400 });
+  }
   if (!message) {
     return Response.json({ error: 'Message is required.' }, { status: 400 });
   }
@@ -58,6 +67,7 @@ export async function onRequestPost({ request, env }) {
         records: [
           {
             fields: {
+              [NAME_FIELD]: name,
               Message: message,
               Source: '3000 Wrap',
             },

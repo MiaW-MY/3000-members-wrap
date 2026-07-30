@@ -207,6 +207,8 @@ window.CONTENT = {
     subtitle: 'is part of our story.',
     question: 'What has BA Career meant to you?',
     prompt: 'Share a memory, a message, or an idea for what you would like to see next.',
+    namePlaceholder: 'Name or nickname',
+    nameMaxLength: 60,
     placeholder: 'Write your message...',
     maxLength: 500,
     note: 'Your message will help us celebrate where we have been and shape what comes next.',
