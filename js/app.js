@@ -497,44 +497,62 @@
         if (charCount) charCount.textContent = '0';
       };
 
+      const saveFeedbackLocal = (name, message, synced) => {
+        localStorage.setItem(feedbackStorageKey, JSON.stringify({
+          name,
+          message,
+          synced: !!synced,
+          submittedAt: new Date().toISOString(),
+        }));
+      };
+
+      const sendFeedback = (name, message) => {
+        const endpoint = C.feedback.submitEndpoint || C.feedback.formspreeEndpoint;
+        if (!endpoint) {
+          saveFeedbackLocal(name, message, true);
+          return Promise.resolve();
+        }
+        return fetch(endpoint, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+          body: JSON.stringify({ name, message, _subject: 'BA Career 3000 Wrap — New Message' }),
+        }).then((res) => {
+          if (!res.ok) throw new Error();
+          saveFeedbackLocal(name, message, true);
+        });
+      };
+
       try {
         const savedFeedback = JSON.parse(localStorage.getItem(feedbackStorageKey) || 'null');
-        if (savedFeedback?.message) showSharedMessage(savedFeedback.message);
+        if (savedFeedback?.message) {
+          showSharedMessage(savedFeedback.message);
+          if (savedFeedback.synced === false && savedFeedback.name) {
+            sendFeedback(savedFeedback.name, savedFeedback.message).catch(() => {
+              toast('Could not send your message yet. We will retry when you return.');
+            });
+          }
+        }
       } catch {
         localStorage.removeItem(feedbackStorageKey);
       }
 
       let feedbackSubmitting = false;
 
-      form?.addEventListener('submit', async (e) => {
+      form?.addEventListener('submit', (e) => {
         e.preventDefault();
         if (feedbackSubmitting) return;
         const message = textarea.value.trim();
         const name = nameInput?.value.trim() || '';
         if (!name || !message) return;
-        const endpoint = C.feedback.submitEndpoint || C.feedback.formspreeEndpoint;
-        const submitBtn = form.querySelector('button[type="submit"]');
+
         feedbackSubmitting = true;
-        if (submitBtn) submitBtn.disabled = true;
-        if (endpoint) {
-          try {
-            const res = await fetch(endpoint, {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-              body: JSON.stringify({ name, message, _subject: 'BA Career 3000 Wrap — New Message' }),
-            });
-            if (!res.ok) throw new Error();
-            localStorage.setItem(feedbackStorageKey, JSON.stringify({ name, message, submittedAt: new Date().toISOString() }));
-            showSharedMessage(message);
-          } catch {
-            feedbackSubmitting = false;
-            if (submitBtn) submitBtn.disabled = false;
-            toast('Something went wrong. Please try again.');
-          }
-        } else {
-          localStorage.setItem(feedbackStorageKey, JSON.stringify({ name, message, submittedAt: new Date().toISOString() }));
-          showSharedMessage(message);
-        }
+        saveFeedbackLocal(name, message, false);
+        showSharedMessage(message);
+        feedbackSubmitting = false;
+
+        sendFeedback(name, message).catch(() => {
+          toast('Something went wrong. We will try sending again later.');
+        });
       });
 
       let touchStartX = 0;
