@@ -443,6 +443,7 @@
 
       screen('screen--closing', `
         <div class="closing-full-art animate-in">
+          ${imgHtml(c.image, null, 'closing-full-art__bg', '')}
           ${imgHtml(c.image, null, 'closing-full-art__img', '3000 members closing')}
         </div>
       `, 'closing');

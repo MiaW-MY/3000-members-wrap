@@ -2198,21 +2198,40 @@ img.is-missing {
 }
 
 .closing-full-art {
+  position: relative;
   width: 100%;
   height: 100%;
   min-height: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   background:
     radial-gradient(circle at 50% 0%, rgba(255,255,255,0.96) 0 42%, rgba(247,242,255,0.96) 70%, rgba(232,214,255,0.9) 100%),
     linear-gradient(180deg, #FFFFFF 0%, #F8F3FF 58%, #E9D9FF 100%);
   overflow: hidden;
 }
 
+.closing-full-art__bg {
+  position: absolute;
+  inset: -28px;
+  width: calc(100% + 56px);
+  height: calc(100% + 56px);
+  object-fit: cover;
+  object-position: center center;
+  filter: blur(22px);
+  opacity: 0.38;
+  transform: scale(1.04);
+  z-index: 0;
+}
+
 .closing-full-art__img {
+  position: relative;
+  z-index: 1;
   width: 100%;
   height: 100%;
   display: block;
-  object-fit: cover;
-  object-position: center top;
+  object-fit: contain;
+  object-position: center center;
 }
 
 .closing-content {
