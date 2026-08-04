@@ -259,11 +259,20 @@
           (s) => `
           <div class="stat-card animate-in">
             <div class="stat-card__icon stat-card__icon--${s.color}${s.iconImage ? ' stat-card__icon--image' : ''}">${s.iconImage ? imgHtml(s.iconImage, null, 'stat-card__icon-img', s.label) : (STAT_SVG[s.icon] || STAT_SVG.members)}</div>
-            <div>
-              <div class="stat-card__value"${s.value != null ? ` data-count="${s.value}" data-suffix="${s.suffix || ''}"` : ''}>${s.value != null ? `0${s.suffix || ''}` : s.valueText}</div>
-              <div class="stat-card__label">${s.label}</div>
-              ${s.subtitle ? `<div class="stat-card__sub">${s.subtitle}</div>` : ''}
-            </div>
+            ${s.subtitle ? `
+              <div class="stat-card__body">
+                <div class="stat-card__headline">
+                  <div class="stat-card__value"${s.value != null ? ` data-count="${s.value}" data-suffix="${s.suffix || ''}"` : ''}>${s.value != null ? `0${s.suffix || ''}` : s.valueText}</div>
+                  <div class="stat-card__label">${s.label}</div>
+                </div>
+                <div class="stat-card__sub">${s.subtitle}</div>
+              </div>
+            ` : `
+              <div class="stat-card__body">
+                <div class="stat-card__value"${s.value != null ? ` data-count="${s.value}" data-suffix="${s.suffix || ''}"` : ''}>${s.value != null ? `0${s.suffix || ''}` : s.valueText}</div>
+                <div class="stat-card__label">${s.label}</div>
+              </div>
+            `}
           </div>`
         )
         .join('');
