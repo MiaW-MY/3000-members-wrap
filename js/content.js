@@ -87,8 +87,8 @@ window.CONTENT = {
     items: [
       { value: 3000, suffix: '+', label: 'Meetup Members', subtitle: '', color: 'purple', icon: 'members' },
       { value: 2000, suffix: '+', label: 'LinkedIn Members', subtitle: '', color: 'blue', icon: 'linkedin' },
-      { value: 100, suffix: '+', label: 'Events Hosted and Supported', subtitle: '', color: 'orange', icon: 'calendar' },
-      { value: 35, suffix: '+', label: 'Event Partners and collaborators', subtitle: '', color: 'green', iconImage: 'by numbers/partners-collaborators-icon.png' },
+      { value: 100, suffix: '+', label: 'Events', subtitle: 'Hosted and Supported', color: 'orange', icon: 'calendar' },
+      { value: 35, suffix: '+', label: 'Event Partners', subtitle: 'Stronger together', color: 'green', iconImage: 'by numbers/partners-collaborators-icon.png' },
       { value: 100, suffix: '+', label: 'Guest Speakers', subtitle: 'Sharing their stories', color: 'green', icon: 'speaker' },
       { value: 50, suffix: '+', label: 'Volunteers', subtitle: 'Powering our community', color: 'blue', iconImage: 'by numbers/powering-community-icon.png' },
       { value: 35, suffix: '+', label: 'Countries', subtitle: 'Our members come from', color: 'purple', icon: 'globe' },
