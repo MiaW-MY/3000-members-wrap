@@ -1,0 +1,7 @@
+/og-image.jpg
+  Content-Type: image/jpeg
+  Cache-Control: public, max-age=86400
+
+/og-image.png
+  Content-Type: image/png
+  Cache-Control: public, max-age=86400
