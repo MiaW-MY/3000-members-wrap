@@ -580,7 +580,7 @@ body {
 }
 
 .screen[data-screen-id="stats"] .screen__content--top {
-  padding-top: clamp(10px, 2vh, 18px);
+  padding-top: clamp(4px, 1vh, 10px);
 }
 
 .screen[data-screen-id="stats"] .section-title::after {
@@ -588,12 +588,12 @@ body {
 }
 
 .stats-content {
-  gap: clamp(7px, 1.2vh, 10px);
+  gap: clamp(4px, 0.8vh, 7px);
 }
 
 .screen[data-screen-id="stats"] .stat-list {
   flex: 0 0 auto;
-  margin-top: clamp(6px, 1vh, 10px);
+  margin-top: clamp(2px, 0.5vh, 5px);
 }
 
 .screen[data-screen-id="thank-hub"] .thanks-grid {
@@ -870,7 +870,7 @@ img.is-missing {
 .stat-list {
   display: flex;
   flex-direction: column;
-  gap: clamp(4px, 0.65vh, 6px);
+  gap: clamp(4px, 0.6vh, 5px);
   flex: 1;
   min-height: 0;
   justify-content: center;
@@ -886,14 +886,14 @@ img.is-missing {
   background: rgba(255, 255, 255, 0.94);
   border: 1px solid rgba(107, 78, 155, 0.08);
   border-radius: 15px;
-  min-height: clamp(47px, 6vh, 53px);
-  padding: 4px 12px;
+  min-height: clamp(54px, 6.65vh, 60px);
+  padding: 6px 13px;
   box-shadow: 0 8px 20px rgba(77, 45, 126, 0.09);
 }
 
 .stat-card__icon {
-  width: clamp(38px, 10vw, 46px);
-  height: clamp(38px, 10vw, 46px);
+  width: clamp(42px, 10.8vw, 50px);
+  height: clamp(42px, 10.8vw, 50px);
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -904,8 +904,8 @@ img.is-missing {
 }
 
 .stat-card__icon svg {
-  width: 24px;
-  height: 24px;
+  width: 26px;
+  height: 26px;
 }
 
 .stat-card__icon--image {
@@ -937,7 +937,7 @@ img.is-missing {
 }
 
 .stat-card__value {
-  font-size: clamp(17px, 4.6vw, 22px);
+  font-size: clamp(20px, 5.2vw, 27px);
   font-weight: 800;
   color: var(--purple-deep);
   line-height: 1;
@@ -945,7 +945,7 @@ img.is-missing {
 }
 
 .stat-card__label {
-  font-size: clamp(10px, 2.65vw, 11.5px);
+  font-size: clamp(11px, 2.85vw, 13px);
   font-weight: 700;
   color: #21163E;
   line-height: 1.08;
@@ -957,7 +957,7 @@ img.is-missing {
 }
 
 .stat-card__sub {
-  font-size: clamp(9px, 2.4vw, 10.5px);
+  font-size: clamp(10px, 2.55vw, 12px);
   line-height: 1.2;
   color: var(--text-muted);
   margin-top: 2px;
