@@ -591,7 +591,12 @@
         return fetch(endpoint, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-          body: JSON.stringify({ name, message, _subject: 'BA Career 3000 Wrap — New Message' }),
+          body: JSON.stringify({
+            name,
+            message,
+            hostname: location.hostname,
+            _subject: 'BA Career 3000 Wrap — New Message',
+          }),
         }).then((res) => {
           if (!res.ok) throw new Error();
           saveFeedbackLocal(name, message, true);

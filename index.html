@@ -27,7 +27,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <link rel="icon" href="assets/icons/Icon%20black.png" type="image/png" />
-  <link rel="stylesheet" href="css/main.css?v=124" />
+  <link rel="stylesheet" href="css/main.css?v=125" />
 </head>
 <body>
   <div id="deck" class="deck" aria-label="BA Career Meetup celebration slides">
@@ -45,7 +45,19 @@
     gtag('js', new Date());
 
     const isDebug = new URLSearchParams(location.search).has('debug');
-    gtag('config', 'G-VT3J1LFYX7', isDebug ? { debug_mode: true } : {});
+    const wrapHostname = location.hostname;
+    const wrapEntry = wrapHostname === 'bacareer-3000-wrapup.easygoat.co.nz'
+      ? 'custom_domain'
+      : wrapHostname === '3000-members-wrap-site.pages.dev'
+        ? 'pages_dev'
+        : wrapHostname;
+
+    window.WRAP_ANALYTICS = { hostname: wrapHostname, entry: wrapEntry };
+
+    const wrapParams = (extra) => Object.assign({ wrap_hostname: wrapHostname, wrap_entry: wrapEntry }, extra);
+
+    gtag('config', 'G-VT3J1LFYX7', wrapParams(isDebug ? { debug_mode: true } : {}));
+    gtag('event', 'wrap_session_start', wrapParams());
 
     const viewedScreens = new Set();
     window.trackScreen = (screenId, screenIndex, screenName) => {
@@ -55,23 +67,23 @@
       const wrapEvent = 'wrap_' + screenId.replace(/-/g, '_');
 
       // screen_view — aggregate; screen_name is a parameter (not shown in Firebase event list)
-      gtag('event', 'screen_view', {
+      gtag('event', 'screen_view', wrapParams({
         screen_name: label,
         screen_class: screenId,
         screen_index: screenIndex,
-      });
+      }));
       // wrap_* — one event per screen, visible directly in Events report
-      gtag('event', wrapEvent, {
+      gtag('event', wrapEvent, wrapParams({
         screen_label: label,
         screen_index: screenIndex,
-      });
+      }));
 
-      if (isDebug) console.log('[analytics]', wrapEvent, label, screenIndex);
+      if (isDebug) console.log('[analytics]', wrapEvent, label, screenIndex, wrapEntry);
     };
 
     window.dispatchEvent(new Event('firebase-ready'));
   </script>
-  <script defer src="js/content.js?v=124"></script>
-  <script defer src="js/app.js?v=124"></script>
+  <script defer src="js/content.js?v=125"></script>
+  <script defer src="js/app.js?v=125"></script>
 </body>
 </html>

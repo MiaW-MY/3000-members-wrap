@@ -35,22 +35,23 @@
 | 会不会分不清来源 | ⚠️ 默认看**总量**；需要时可按 **hostname（主机名）** 筛选 |
 | 是否推荐分开 | 一般**不需要**两个 GA 项目；campaign 看总访问 + 按 hostname 拆分即可 |
 
-在 GA4 里查看示例：
+在 GA4 里查看（部署 `wrap_entry` 参数后）：
 
-- **Reports → Engagement → Pages and screens**，加维度 **Hostname**
-- 或探索报告里筛选：
-  - `3000-members-wrap-site.pages.dev`
-  - `bacareer-3000-wrapup.easygoat.co.nz`
+- **Explore → Free form**：维度选 Event parameter `wrap_entry`，指标选 Event count / Active users
+  - `custom_domain` = 新域名 `bacareer-3000-wrapup.easygoat.co.nz`
+  - `pages_dev` = 旧链接 `3000-members-wrap-site.pages.dev`
+- 或 **Reports → Realtime**，打开不同链接后看 `wrap_session_start` 事件参数
+- 可选：GA4 Admin → Custom definitions → 注册 `wrap_entry`、`wrap_hostname` 为 Event-scoped custom dimensions，之后在 Events 报告里直接筛选
 
-screen_view / wrap_* 事件在两个域名下都会正常上报，**不会丢数据**。
+每次访问还会上报 `wrap_session_start`；各屏 `screen_view` / `wrap_*` 事件均带 `wrap_hostname` 与 `wrap_entry`。
 
 #### Airtable Feedback（`/api/feedback`）
 
 | 项目 | 说明 |
 |------|------|
 | 是否同一个表 | ✅ 是，两个域名的提交都进同一张 Feedback 表 |
-| 会不会混在一起 | ✅ 消息都在一起，**目前 Source 固定为 `3000 Wrap`**，**不区分**从哪个域名提交 |
-| 是否有问题 | 对运营来说通常是**好事**（一个 inbox）；若以后要区分域名，见下文「可选增强」 |
+| 如何区分域名 | ✅ **Source** 字段现为 `3000 Wrap · <hostname>`，例如 `3000 Wrap · bacareer-3000-wrapup.easygoat.co.nz` |
+| 是否有问题 | 同一张表，可按 Source 列筛选或分组 |
 
 Feedback 用的是相对路径 `/api/feedback`，绑新域名后**无需改 API 配置**，Airtable Token 仍是 Pages 环境变量。
 
@@ -146,9 +147,9 @@ Feedback 用的是相对路径 `/api/feedback`，绑新域名后**无需改 API 
 
 ## 可选增强（非必须）
 
-### A. Airtable 里区分来源域名
+### A. ~~Airtable 里区分来源域名~~（已实现）
 
-若希望 feedback 记录从哪个域名提交，可改 `functions/api/feedback.js`，把 `Source` 改为包含 hostname，或增加一列 **URL / Domain**（需 Airtable 加列）。
+Feedback 的 **Source** 已自动写入 `3000 Wrap · <hostname>`，无需再改 API。
 
 ### B. 旧域名 301 跳转到新域名
 
@@ -160,7 +161,7 @@ https://3000-members-wrap-site.pages.dev/* https://bacareer-3000-wrapup.easygoat
 
 ### C. GA 里固定只看新域名
 
-在 GA4 探索报告中保存一个 segment：`Hostname = bacareer-3000-wrapup.easygoat.co.nz`，作为 LinkedIn campaign 主报告。
+在 GA4 探索报告中保存 filter：`wrap_entry = custom_domain`，作为 LinkedIn campaign 主报告。
 
 ---
 

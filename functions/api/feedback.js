@@ -55,6 +55,9 @@ export async function onRequestPost({ request, env }) {
     return Response.json({ error: `Message must be ${MAX_LENGTH} characters or fewer.` }, { status: 400 });
   }
 
+  const hostname = String(body.hostname || '').trim().slice(0, 120);
+  const source = hostname ? `3000 Wrap · ${hostname}` : '3000 Wrap';
+
   const airtableRes = await fetch(
     `https://api.airtable.com/v0/${baseId}/${encodeURIComponent(tableRef)}`,
     {
@@ -69,7 +72,7 @@ export async function onRequestPost({ request, env }) {
             fields: {
               [NAME_FIELD]: name,
               Message: message,
-              Source: '3000 Wrap',
+              Source: source,
             },
           },
         ],
